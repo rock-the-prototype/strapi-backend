@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "photographers",
+  "info": {
+    "name": "Photographer"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "eMail": {
+      "type": "email"
+    },
+    "description": {
+      "type": "richtext"
+    }
+  }
+}
