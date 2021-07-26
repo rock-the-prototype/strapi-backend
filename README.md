@@ -9,5 +9,5 @@ Strapi is an **open-source headless CMS** that gives developers the freedom to c
 Get started to be involed:
 https://strapi.io/documentation/developer-docs/latest/getting-started/introduction.html
 
-Getting Strapi started with NUXT:
+Getting Strapi started with NUXT:clear
 https://strapi.io/documentation/developer-docs/latest/developer-resources/content-api/integrations/nuxt-js.html
