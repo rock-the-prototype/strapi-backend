@@ -1,0 +1,14 @@
+version: '3'
+services:
+  strapi:
+    build: .
+    external_links:
+      - postgres13master
+    networks:
+      - intern
+      - web
+networks:
+  intern:
+      external: true
+  web:
+      external: true

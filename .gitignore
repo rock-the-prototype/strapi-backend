@@ -70,6 +70,7 @@ $RECYCLE.BIN/
 *.sql
 *.sqlite
 *.sqlite3
+db/
 
 
 ############################
@@ -112,3 +113,5 @@ exports
 *.cache
 build
 .strapi-updater.json
+
+
