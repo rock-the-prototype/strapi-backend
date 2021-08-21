@@ -10,6 +10,8 @@ services:
       - web
     expose:
       - 1337
+    volumes:
+      - ../.env:/app/.env
 networks:
   intern:
       external: true

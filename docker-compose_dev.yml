@@ -2,10 +2,9 @@ version: '3'
 services:
   strapi:
     build:
-      context: .
+      context: ./
       dockerfile: Dockerfile_dev
     command: yarn develop
-    env_file: .env
     external_links:
       - postgres13master
     networks:
@@ -13,6 +12,8 @@ services:
       - web
     ports:
       - '1337:1337'
+    volumes:
+      - ../.env:/app/.env
 networks:
   intern:
       external: true
