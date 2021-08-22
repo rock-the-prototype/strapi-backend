@@ -10,6 +10,20 @@ services:
       - web
     expose:
       - 1337
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.strapi.entrypoints=http"
+      - "traefik.http.routers.strapi.rule=Host(`strapi.prototype-z.de`)" ## Hier anpassen ##
+      - "traefik.http.middlewares.strapi-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.strapi.middlewares=strapi-https-redirect"
+      - "traefik.http.routers.strapi-secure.entrypoints=https"
+      - "traefik.http.routers.strapi-secure.rule=Host(`strapi.prototype-z.de`)" ## Hier anpassen ##
+      - "traefik.http.routers.strapi-secure.tls=true"
+      - "traefik.http.routers.strapi-secure.tls.options=myTLSOptions@file"
+      - "traefik.http.routers.strapi-secure.tls.certresolver=le"
+      - "traefik.http.routers.strapi-secure.service=strapi"
+      - "traefik.http.services.strapi.loadbalancer.server.port=1337"
+      - "traefik.http.routers.strapi-secure.middlewares=default-headers@file"
     volumes:
       - ../.env:/app/.env
 networks:
