@@ -1,0 +1,25 @@
+name: SSH Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # initiale ssh Verbindung aufbauen und "Bekanntmachung" der Hosts 
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+      # kopieren der Daten auf den Server via ssh
+      #- name: Deploy with rsync
+      #  run: rsync -avz -e 'ssh -p ${{ secrets.DEPLOY_PORT }}' ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_TARGET }} .
+      # ssh login und ausführen der Docker-Aktionen Container bauen und starten
+      #- name: Executing Docker build command
+      #  run: ssh ${ -p {secrets.DEPLOY_PORT} { secrets.DEPLOY_USER } }@${ { secrets.DEPLOY_HOST } } bash docker-compose -f /home/app/strapi/docker-compose.yml up -d --build
