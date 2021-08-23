@@ -4,21 +4,21 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile_dev
-    command: yarn start
+    command: NODE_ENV=development yarn develop
     external_links:
       - postgres13master
     networks:
       - intern
       - web
-    expose:
-      - 1337
+    ports:
+      - 1337:1337
     volumes:
       - ../.env:/app/.env
     labels:
       - traefik.enable=true
       - traefik.http.routers.strapi.entrypoints=web
       - traefik.http.routers.strapi.rule=Host(`${HOSTNAME_DEV}`) ## Hier anpasse
-      - traefik.http.services.myproject.loadbalancer.server.port=1337
+      #- traefik.http.services.myproject.loadbalancer.server.port=1337
 networks:
   intern:
       external: true
