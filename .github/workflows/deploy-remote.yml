@@ -17,12 +17,12 @@ jobs:
           known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
       - name: Adding Known Hosts
         run: ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
-      # checkout
-      - uses: actions/checkout@v2
+      - name: Show ~/.ssh/known_hosts
+        run: cat ~/.ssh/known_hosts
       # kopieren der Daten auf den Server via ssh
-      - name: Deploy with rsync
-        run: rsync -av -e 'ssh -p -oHostKeyAlgorithms=sk-ssh-ed25519@openssh.com ${{ secrets.DEPLOY_PORT }}' . ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_TARGET }}
+      #- name: Deploy with rsync
+      #  run: rsync -av -e 'ssh -p ${{ secrets.DEPLOY_PORT }}' . ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_TARGET }}
       # ssh login und ausführen der Docker-Aktionen Container bauen und starten
-      - name: Executing Docker build command
-        run: ssh ${ -p {secrets.DEPLOY_PORT} { secrets.DEPLOY_USER } }@${ { secrets.DEPLOY_HOST } } bash docker-compose --env-file=/home/app/.env -f /home/app/strapi/docker-compose.yml up -d --build
+      #- name: Executing Docker build command
+      #  run: ssh ${ -p {secrets.DEPLOY_PORT} { secrets.DEPLOY_USER } }@${ { secrets.DEPLOY_HOST } } bash docker-compose --env-file=/home/app/.env -f /home/app/strapi/docker-compose.yml up -d --build
 
