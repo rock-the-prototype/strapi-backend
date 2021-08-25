@@ -13,7 +13,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.strapi.entrypoints=http"
-      - traefik.http.routers.strapi.rule=Host(`${HOSTNAME}`) ## Hier anpassen ##
+      - "traefik.http.routers.strapi.rule=Host(`${HOSTNAME}`)" ## Hier anpassen ##
       - "traefik.http.middlewares.strapi-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.strapi.middlewares=strapi-https-redirect"
       - "traefik.http.routers.strapi-secure.entrypoints=https"
