@@ -7,23 +7,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      # kopieren der Daten auf den Server via ssh
-      - name: Deploy with rsync
-        env:
-          remote_host: ${{ secrets.DEPLOY_HOST }}
-          remote_port: ${{ secrets.DEPLOY_PORT }}
-          remote_user: ${{ secrets.DEPLOY_USER }}
-          remote_key: ${{ secrets.DEPLOY_KEY }}
-          local_dir: .
-          remote_dir: ${{ secrets.DEPLOY_TARGET }}
-        run:
-          mkdir ~/.ssh
-          echo "$remote_key" > ~/.ssh/gh_actions_key
-          chmod 600 ~/.ssh/gh_actions_key
-          rsync -avzr -e "ssh -p ${remote_port} -i ~/.ssh/gh_actions_key -o StrictHostKeyChecking=no" ${local_dir} ${remote_user}@${remote_host}:${remote_dir}
+    - uses: actions/checkout@v2
+    - name: rsync deployments
+      uses: burnett01/rsync-deployments@5.1
+      with:
+        switches: -avzr
+        path: .
+        remote_path: ${{ secrets.DEPLOY_TARGET }}
+        remote_host: ${{ secrets.DEPLOY_HOST }}
+        remote_port: ${{ secrets.DEPLOY_PORT }}
+        remote_user: ${{ secrets.DEPLOY_USER }}
+        remote_key: ${{ secrets.DEPLOY_KEY }}
       # ssh login und ausführen der Docker-Aktionen Container bauen und starten
       #- name: Executing Docker build command
       #  run: ssh ${ -p {secrets.DEPLOY_PORT} { secrets.DEPLOY_USER } }@${ { secrets.DEPLOY_HOST } } bash docker-compose --env-file=/home/app/.env -f /home/app/strapi/docker-compose.yml up -d --build
