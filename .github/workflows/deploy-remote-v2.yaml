@@ -1,0 +1,22 @@
+name: SSH Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      # kopieren der Daten auf den Server via ssh
+      - name: Deploy with rsync
+        run:
+          mkdir ~/.ssh
+          echo "$remote_key" > ~/.ssh/gh_actions_key
+          chmod 600 ~/.ssh/gh_actions_key
+          rsync -avzr -e "ssh -p ${{ secrets.DEPLOY_PORT }} -i ~/.ssh/gh_actions_key -o StrictHostKeyChecking=no" . ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_TARGET }}
+      # ssh login und ausführen der Docker-Aktionen Container bauen und starten
+      #- name: Executing Docker build command
+      #  run: ssh ${ -p {secrets.DEPLOY_PORT} { secrets.DEPLOY_USER } }@${ { secrets.DEPLOY_HOST } } bash docker-compose --env-file=/home/app/.env -f /home/app/strapi/docker-compose.yml up -d --build
