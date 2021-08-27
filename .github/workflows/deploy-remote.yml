@@ -20,7 +20,7 @@ jobs:
         run: ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
       # kopieren der Daten auf den Server via ssh
       - name: Deploy with rsync
-        run: rsync -av -e ssh -p ${{ secrets.DEPLOY_PORT }} . ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}@${{ secrets.DEPLOY_TARGET }}
+        run: rsync -av -e --delete ssh -p ${{ secrets.DEPLOY_PORT }} ../rtp-strapi ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}@${{ secrets.DEPLOY_TARGET }}
       # ssh login und ausführen der Docker-Aktionen Container bauen und starten
       - name: Executing Docker build command
         run: ssh ${ -p {secrets.DEPLOY_PORT} { secrets.DEPLOY_USER } }@${ { secrets.DEPLOY_HOST } } bash docker-compose --env-file=/home/app/.env -f /home/app/strapi/docker-compose.yml up -d --build
