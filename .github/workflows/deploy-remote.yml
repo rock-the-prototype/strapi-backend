@@ -10,14 +10,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      # initiale ssh Verbindung aufbauen und "Bekanntmachung" der Hosts
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.DEPLOY_KEY }}
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-      - name: ssh login
-        run: ssh -vvv -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}
+      - name: Sync
+        run: |
+          echo "${{secrets.DEPLOY_KEY}}" > deploy_key
+          chmod 600 ./deploy_key
+          rsync -chav --delete \
+            -e 'ssh -p ${{secrets.DEPLOY_PORT }} -i ./deploy_key -o StrictHostKeyChecking=no' \
+            --exclude /deploy_key \
+            --exclude /.git/ \
+            --exclude /.github/ \
+            --exclude /node_modules/ \
+            ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_TARGET }}
       #- name: Adding Known Hosts
       #  run: ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
       #- name: Deploy with rsync
