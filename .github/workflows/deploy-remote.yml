@@ -20,7 +20,7 @@ jobs:
             --exclude /.git/ \
             --exclude /.github/ \
             --exclude /node_modules/ \
-            ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_TARGET_STRAPI }}
+            ./ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_TARGET }}
       #- name: Adding Known Hosts
       #  run: ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
       #- name: Deploy with rsync
