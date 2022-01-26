@@ -10,6 +10,9 @@ services:
       - web
     expose:
       - 1337
+    deploy:
+      restart_policy:
+        condition: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.strapi.entrypoints=http"
@@ -28,6 +31,6 @@ services:
       - ../.env:/app/.env
 networks:
   intern:
-      external: true
+    external: true
   web:
-      external: true
+    external: true
